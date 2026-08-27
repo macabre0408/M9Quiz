@@ -27,8 +27,15 @@ db.exec('PRAGMA foreign_keys = ON');
  * 3. Compter les questionnaires
  * 4. S'il n'y en a aucun, lire et exécuter seed.sql de la même façon.
  */
+
+
 export function initializeDatabase() {
-  console.warn('repository/db.js : initializeDatabase est À faire.');
+  const schama = readFileSync(fileURLToPath(new URL('schema.sql', dataDir)), 'utf-8');
+  db.exec(schama);
+  const { n_que } = db.prepare('select count(quiz_id) as n_que from question').get();
+  if (!n_que) {
+    db.exec(readFileSync(fileURLToPath(new URL('seed.sql', dataDir)), 'utf-8'));
+  }
 }
 
 /**
