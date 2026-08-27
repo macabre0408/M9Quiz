@@ -16,7 +16,12 @@ import { db } from './db.js';
  * @returns {number} l'id de la partie créée
  */
 export function createGame(quizId, code, createdAt) {
-  throw new Error('À faire.');
+  const result = db.prepare(
+    'insert into game(quiz_id, code, created_at) values(?,?,?)'
+  )
+  .run(quizId, code, createdAt);
+
+  return result.lastInsertRowid;
 }
 
 /**
