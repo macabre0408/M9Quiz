@@ -33,7 +33,11 @@ export function createGame(quizId, code, createdAt) {
  * @returns {number} l'id du joueur inscrit
  */
 export function addPlayer(gameId, nickname) {
-  throw new Error('À faire.');
+  const res = db.prepare(
+    'insert into player(game_id, nickname) values(?,?)'
+  )
+  .run(gameId, nickname);
+  return res.lastInsertRowid;
 }
 
 // ── Fournies : les lectures ───────────────────────────────────────────────
